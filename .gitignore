@@ -130,6 +130,6 @@ dmypy.json
 
 .vscode
 .pre-commit-config.yaml
-./.flake8
-./.isort.cfg
-./.mypy.ini
+.flake8
+.isort.cfg
+.mypy.ini
