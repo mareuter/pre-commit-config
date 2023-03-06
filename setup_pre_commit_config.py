@@ -46,7 +46,12 @@ def main(opts: argparse.Namespace) -> None:
         pre_commit_config = f.read()
     if not args.no_mypy:
         with open(MYPY_PRE_COMMIT_HOOK_TEMPLATE) as f:
-            pre_commit_config = pre_commit_config + f.read()
+            mypy_pre_commit_config = f.read()
+            if opts.mypy_extras is not None:
+                extras = opts.mypy_extras.split(",")
+                for extra in extras:
+                    mypy_pre_commit_config += " " * 10 + f"- {extra.strip()}\n"
+            pre_commit_config += mypy_pre_commit_config
     with open(pathlib.Path(destination) / PRE_COMMIT_CONFIG_FILE_NAME, "w") as f:
         f.write(pre_commit_config)
 
@@ -93,6 +98,12 @@ if __name__ == "__main__":
         help="The destination folder to install the pre-commit configurations files into "
         "(default: '.' meaning the current working directory). Intended to be used by "
         "scripts that update more than one project at a time.",
+    )
+
+    parser.add_argument(
+        "--mypy-extras",
+        help="Add extra stub package dependencies into the mypy pre-commit hook config. "
+        "More than one package can be specified using a comma-delimited list.",
     )
 
     args = parser.parse_args()
