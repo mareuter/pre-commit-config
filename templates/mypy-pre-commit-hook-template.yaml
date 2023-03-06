@@ -3,4 +3,5 @@
     rev: v1.0.0
     hooks:
       - id: mypy
-        additional_dependencies: [types-PyYAML==6.0.12.2]
+        additional_dependencies:
+          - types-PyYAML==6.0.12.2
